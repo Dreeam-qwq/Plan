@@ -39,7 +39,7 @@ public class FabricMessageBuilder implements MessageBuilder {
 
     FabricMessageBuilder(ServerCommandSource sender, FabricMessageBuilder previous) {
         this.sender = sender;
-        this.builder = Text.literal("");
+        this.builder = Text.of("").shallowCopy();
         this.previous = previous;
     }
 
@@ -70,19 +70,19 @@ public class FabricMessageBuilder implements MessageBuilder {
 
     @Override
     public MessageBuilder hover(String message) {
-        builder.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(message))));
+        builder.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of(message))));
         return this;
     }
 
     @Override
     public MessageBuilder hover(String... lines) {
-        builder.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(new TextStringBuilder().appendWithSeparators(lines, "\n").toString()))));
+        builder.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of(new TextStringBuilder().appendWithSeparators(lines, "\n").toString()))));
         return this;
     }
 
     @Override
     public MessageBuilder hover(Collection<String> lines) {
-        builder.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(new TextStringBuilder().appendWithSeparators(lines, "\n").toString()))));
+        builder.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of(new TextStringBuilder().appendWithSeparators(lines, "\n").toString()))));
         return this;
     }
 
@@ -103,7 +103,7 @@ public class FabricMessageBuilder implements MessageBuilder {
     @Override
     public void send() {
         if (previous == null) {
-            sender.sendFeedback(() -> builder, false);
+            sender.sendFeedback(builder, false);
         } else {
             previous.builder.append(builder);
             previous.send();

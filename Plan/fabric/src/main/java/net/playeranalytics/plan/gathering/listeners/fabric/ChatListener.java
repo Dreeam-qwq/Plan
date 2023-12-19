@@ -23,9 +23,10 @@ import com.djrapitops.plan.storage.database.DBSystem;
 import com.djrapitops.plan.storage.database.transactions.events.StoreNicknameTransaction;
 import com.djrapitops.plan.utilities.logging.ErrorContext;
 import com.djrapitops.plan.utilities.logging.ErrorLogger;
-import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.playeranalytics.plan.gathering.listeners.FabricListener;
+import net.playeranalytics.plan.gathering.listeners.events.PlanFabricEvents;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -61,18 +62,19 @@ public class ChatListener implements FabricListener {
         this.errorLogger = errorLogger;
     }
 
-    public void onChat(ServerPlayerEntity player) {
+    public void onChat(ServerPlayNetworkHandler handler, String message) {
         try {
-            actOnChatEvent(player);
+            actOnChatEvent(handler);
         } catch (Exception e) {
-            errorLogger.error(e, ErrorContext.builder().related(player).build());
+            errorLogger.error(e, ErrorContext.builder().related(handler, message).build());
         }
     }
 
-    private void actOnChatEvent(ServerPlayerEntity player) {
+    private void actOnChatEvent(ServerPlayNetworkHandler handler) {
         long time = System.currentTimeMillis();
+        ServerPlayerEntity player = handler.player;
         UUID uuid = player.getUuid();
-        String displayName = player.getDisplayName().getString();
+        String displayName = player.getDisplayName().asString();
 
         dbSystem.getDatabase().executeTransaction(new StoreNicknameTransaction(
                 uuid, new Nickname(displayName, time, serverInfo.getServerUUID()),
@@ -86,11 +88,11 @@ public class ChatListener implements FabricListener {
             return;
         }
 
-        ServerMessageEvents.CHAT_MESSAGE.register((message, sender, params) -> {
+        PlanFabricEvents.ON_CHAT.register((handler, message) -> {
             if (!isEnabled) {
                 return;
             }
-            onChat(sender);
+            onChat(handler, message);
         });
 
         this.enable();

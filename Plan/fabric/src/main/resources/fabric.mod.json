@@ -13,14 +13,13 @@
     "plan.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.19",
+    "minecraft": ">=1.18",
     "java": ">=17",
     "fabric-api-base": "*",
-    "fabric-command-api-v2": "*",
+    "fabric-command-api-v1": "*",
     "fabric-entity-events-v1": "*",
     "fabric-lifecycle-events-v1": "*",
-    "fabric-networking-api-v1": "*",
-    "fabric-message-api-v1": "*"
+    "fabric-networking-api-v1": "*"
   },
   "suggests": {
     "fabric-permissions-api-v0": "*"

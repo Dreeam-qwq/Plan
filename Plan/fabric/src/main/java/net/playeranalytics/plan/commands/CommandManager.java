@@ -85,9 +85,9 @@ public class CommandManager {
             try {
                 subcommand.getExecutor().accept((CMDSender) ctx.getSource(), new Arguments(getCommandArguments(ctx)));
             } catch (IllegalArgumentException e) {
-                ctx.getSource().sendError(Text.literal(e.getMessage()));
+                ctx.getSource().sendError(Text.of(e.getMessage()));
             } catch (Exception e) {
-                ctx.getSource().sendError(Text.literal("An internal error occurred, see the console for details."));
+                ctx.getSource().sendError(Text.of("An internal error occurred, see the console for details."));
                 errorLogger.error(e, ErrorContext.builder()
                         .related(ctx.getSource().getClass())
                         .related(subcommand.getPrimaryAlias() + " " + getCommandArguments(ctx))

@@ -21,7 +21,6 @@ import com.djrapitops.plan.settings.config.PlanConfig;
 import com.djrapitops.plan.utilities.logging.ErrorContext;
 import com.djrapitops.plan.utilities.logging.ErrorLogger;
 import me.lucko.fabric.api.permissions.v0.Permissions;
-import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.playeranalytics.plan.commands.CommandManager;
@@ -96,13 +95,7 @@ public class FabricAFKListener implements FabricListener {
             return;
         }
 
-        ServerMessageEvents.CHAT_MESSAGE.register((message, sender, params) -> {
-            if (!isEnabled) {
-                return;
-            }
-            event(sender);
-        });
-        PlanFabricEvents.ON_COMMAND.register((handler, command) -> {
+        PlanFabricEvents.ON_CHAT.register((handler, command) -> {
             if (!isEnabled) {
                 return;
             }
