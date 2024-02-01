@@ -89,9 +89,9 @@ subprojects {
         caffeineVersion = "3.1.8"
         jettyVersion = "11.0.19"
         caffeineVersion = "2.9.2"
-        mysqlVersion = "8.2.0"
+        mysqlVersion = "8.3.0"
         mariadbVersion = "3.3.2"
-        sqliteVersion = "3.42.0.1"
+        sqliteVersion = "3.45.0.0"
         adventureVersion = "4.14.0"
         hikariVersion = "5.1.0"
         slf4jVersion = "2.0.11"
@@ -106,8 +106,8 @@ subprojects {
         nkPlaceholderapiVersion = "1.4-SNAPSHOT"
 
         junitVersion = "5.10.1"
-        mockitoVersion = "5.8.0"
-        testContainersVersion = "1.19.3"
+        mockitoVersion = "5.10.0"
+        testContainersVersion = "1.19.4"
         swaggerVersion = "2.2.20"
     }
 
